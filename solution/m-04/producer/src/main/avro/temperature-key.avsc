@@ -1,0 +1,8 @@
+{
+    "namespace": "clients.model",
+    "type": "record",
+    "name": "TemperatureKey",
+    "fields": [
+        {"name": "station_id", "type": "string"}
+    ]
+}
