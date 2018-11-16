@@ -20,7 +20,7 @@ import clients.model.TemperatureValue;
 public class TemperaturesProducer {
     List<Station> _allStations;
     KafkaProducer<Object,Object> _producer;
-    final String _topicName = getEnvrionmentValue("TOPIC_NAME", "temperatures_topic");
+    final String _topicName = getEnvrionmentValue("TOPIC_NAME", "temperatures-topic");
 
     private KafkaProducer<Object,Object> createProducer() throws IOException {
         Properties props = new Properties();
@@ -110,15 +110,17 @@ public class TemperaturesProducer {
         System.out.println("*** Starting Temperature Producer ***");
 
         TemperaturesProducer producer = new TemperaturesProducer();
+        
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("### Stopping Temperature Producer ###");
+            producer.terminate();
+        }));
+
         try{
             producer.produce();
         } catch(IOException ex){
             ex.printStackTrace();
             return;
         }
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("### Stopping Temperature Producer ###");
-            producer.terminate();
-        }));
     }
 }
