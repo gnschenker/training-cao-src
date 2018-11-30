@@ -1,0 +1,19 @@
+version: "3.5"
+services:
+  producer:
+    image: jmx-producer
+    build: producer
+    networks:
+      - app-net
+    ports:
+      - 4444:4444
+  consumer:
+    image: jmx-consumer
+    build: consumer
+    networks:
+      - app-net
+    ports:
+      - 4445:4444
+
+networks:
+  app-net:
