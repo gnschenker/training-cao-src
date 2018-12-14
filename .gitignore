@@ -2,3 +2,6 @@ build/
 .gradle/
 .vscode
 .DS_Store
+bin
+obj
+output

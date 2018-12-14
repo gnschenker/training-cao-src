@@ -21,8 +21,6 @@ services:
     volumes:
       # - ./agents:/agents
       - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - 7071:7071
     environment:
       KAFKA_BROKER_ID: 101
       KAFKA_ZOOKEEPER_CONNECT: zk:2181
@@ -38,8 +36,6 @@ services:
     image: prometheus-jmx-exporter
     networks:
       - confluent
-    ports:
-      - 8080:8080
     environment:
       - JMX_PORT=9999
       - JMX_HOST=kafka
