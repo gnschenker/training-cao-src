@@ -13,7 +13,7 @@ services:
     networks:
       - app-net
     ports:
-      - 4445:4444
+      - 4445:4445
 
 networks:
   app-net:
