@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   zk:
-    image: confluentinc/cp-zookeeper:5.0.0
+    image: confluentinc/cp-zookeeper:5.1.0
     container_name: zk
     networks:
       - confluent
@@ -13,15 +13,14 @@ services:
       - ZOOKEEPER_SYNC_LIMIT=2
 
   kafka:
-    image: "confluentinc/cp-enterprise-kafka:5.0.0"
+    image: "confluentinc/cp-enterprise-kafka:5.1.0"
     container_name: kafka
     hostname: kafka
     networks:
       - confluent
     volumes:
+      # - ./agents:/agents
       - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - 7071:7071
     environment:
       KAFKA_BROKER_ID: 101
       KAFKA_ZOOKEEPER_CONNECT: zk:2181
@@ -29,18 +28,8 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_DELETE_TOPIC_ENABLE: "true"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      # KAFKA_OPTS: "-javaagent:/agents/jmx_prometheus_javaagent-0.10.jar=7071:/agents/kafka-0-8-2.yml"
       JMX_PORT: 9999
-
-  kafka-jmx-exporter:
-    build: ./prometheus-jmx-exporter
-    image: prometheus-jmx-exporter
-    networks:
-      - confluent
-    environment:
-      - JMX_PORT=9999
-      - JMX_HOST=kafka
-      - HTTP_PORT=8080
-      - JMX_EXPORTER_CONFIG_FILE=kafka.yml
 
   kafka-jmx-exporter:
     build: ./prometheus-jmx-exporter
@@ -80,10 +69,11 @@ services:
     networks:
       - confluent
     volumes:
-      - ${PWD}/graf-data:/var/lib/grafana/"
+      - "graf-db:/var/lib/grafana/"
+
 
   base:
-    image: confluentinc/cp-kafka-connect:5.0.0
+    image: confluentinc/cp-kafka-connect:5.1.0
     container_name: base
     hostname: base
     entrypoint: /bin/sh
