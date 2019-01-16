@@ -1,0 +1,23 @@
+{
+    "schema":
+    "{
+        \"namespace\": \"app\",
+        \"type\": \"record\",
+        \"name\": \"test\",
+        \"fields\":
+        [
+            {
+                \"name\": \"field1\",
+                \"type\": \"string\"
+            },
+            {
+                \"name\": \"field2\",
+                \"type\": \"int\"
+            },
+            {
+                \"name\": \"field3\",
+                \"type\": \"double\"
+            }
+        ]
+    }"
+}
