@@ -163,7 +163,7 @@ qdisc netem 8004: root refcnt 2 limit 1000 delay 200.0ms
 +
 [source,subs="verbatim,quotes"]
 --
-root@one:/# *tc qdisc show  dev eth0*
+root@one:/# *tc qdisc change dev eth0 root netem delay 20ms*
 qdisc netem 8004: root refcnt 2 limit 1000 delay 20.0ms
 --
 
