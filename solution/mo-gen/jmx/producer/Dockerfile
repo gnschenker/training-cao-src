@@ -1,4 +1,4 @@
-FROM gradle:4.10.2-jdk11-slim AS builder
+FROM gradle:5.1.1-jdk11-slim AS builder
 WORKDIR /home/gradle/project
 ADD ./*.gradle ./
 COPY ./producer.properties ./
