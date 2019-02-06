@@ -1,12 +1,12 @@
 version: "3.5"
 services:
   producer:
-    image: test-producer-net
+    image: cnfltraining/test-producer-net:1.0
     build: producer
     networks:
     - app-net
   consumer:
-    image: test-consumer-net
+    image: cnfltraining/test-consumer-net:1.0
     build: consumer
     networks:
     - app-net
