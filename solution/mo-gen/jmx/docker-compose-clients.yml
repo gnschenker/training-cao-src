@@ -1,14 +1,14 @@
 version: "3.5"
 services:
   producer:
-    image: jmx-producer
+    image: cnfltraining/jmx-producer:1.0
     build: producer
     networks:
       - app-net
     ports:
       - 4444:4444
   consumer:
-    image: jmx-consumer
+    image: cnfltraining/jmx-consumer:1.0
     build: consumer
     networks:
       - app-net
