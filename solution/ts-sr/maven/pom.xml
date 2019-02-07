@@ -28,11 +28,11 @@
                     </schemaRegistryUrls>
                     <outputDirectory>src/main/avro</outputDirectory>
                     <subjectPatterns>
-                        <param>^user$</param>
+                        <param>^users-value$</param>
                     </subjectPatterns>
                     <subjects>
-                        <user>avro/user.avsc</user>
-                        <user>avro/user.v3.avsc</user>
+                        <users-value>avro/user.avsc</users-value>
+                        <users-value>avro/user.v3.avsc</users-value>
                     </subjects>
                 </configuration>
             </plugin>
