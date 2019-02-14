@@ -19,9 +19,10 @@ services:
     networks:
       - confluent
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ./agents:/agents
     ports:
       - 7071:7071
+      - 9999:9999
     environment:
       KAFKA_BROKER_ID: 101
       KAFKA_ZOOKEEPER_CONNECT: zk:2181
@@ -29,29 +30,9 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_DELETE_TOPIC_ENABLE: "true"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      JMX_PORT: 9999
-
-  kafka-jmx-exporter:
-    build: ./prometheus-jmx-exporter
-    image: prometheus-jmx-exporter
-    networks:
-      - confluent
-    environment:
-      - JMX_PORT=9999
-      - JMX_HOST=kafka
-      - HTTP_PORT=8080
-      - JMX_EXPORTER_CONFIG_FILE=kafka.yml
-
-  kafka-jmx-exporter:
-    build: ./prometheus-jmx-exporter
-    image: prometheus-jmx-exporter
-    networks:
-      - confluent
-    environment:
-      - JMX_PORT=9999
-      - JMX_HOST=kafka
-      - HTTP_PORT=8080
-      - JMX_EXPORTER_CONFIG_FILE=kafka.yml
+      KAFKA_JMX_PORT: 9999
+      KAFKA_JMX_HOSTNAME: 127.0.0.1
+      KAFKA_OPTS: "-javaagent:/agents/jmx_prometheus_javaagent-0.10.jar=7071:/agents/kafka.yml"
 
   prometheus:
     image: prom/prometheus:v2.5.0
@@ -81,6 +62,29 @@ services:
       - confluent
     volumes:
       - ${PWD}/graf-data:/var/lib/grafana/"
+
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:5.1.0
+    hostname: control-center
+    restart: always
+    networks:
+      - confluent
+    ports:
+      - "9021:9021"
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: kafka:9092
+      CONTROL_CENTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_INTERNAL_TOPICS_REPLICATION: 1
+      CONTROL_CENTER_COMMAND_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_METRICS_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_STREAMS_NUM_STREAM_THREADS: 1
+      CONTROL_CENTER_STREAMS_CONSUMER_REQUEST_TIMEOUT_MS: "960032"
+      CONTROL_CENTER_CONNECT_CLUSTER: "connect:8083"
+      CONTROL_CENTER_KSQL_URL: "http://ksql-server:8088"
+      CONTROL_CENTER_KSQL_ADVERTISED_URL: "http://localhost:8088"
+      CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
 
   base:
     image: confluentinc/cp-kafka-connect:5.1.0
