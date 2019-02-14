@@ -19,6 +19,11 @@ rules:
 
   # Kafka *********************************************************************
   # Generic per-second counters with 0-2 key/value pairs
+  - pattern : "kafka.cluster<type=(.+), name=(.+), topic=(.+), partition=(.+)><>Value"
+    name: kafka_cluster_$1_$2
+    labels:
+      topic: "$3"
+      partition: "$4"
   - pattern: kafka.(\w+)<type=(.+), name=(.+)PerSec\w*, (.+)=(.+), (.+)=(.+)><>Count
     name: kafka_$1_$2_$3_total
     type: COUNTER

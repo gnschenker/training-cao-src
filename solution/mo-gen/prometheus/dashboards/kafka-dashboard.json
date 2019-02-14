@@ -1,5 +1,5 @@
 {
-  "id": 1,
+  "id": 12,
   "title": "Kafka Dashboard",
   "originalTitle": "Kafka Dashboard",
   "tags": [],
@@ -54,10 +54,11 @@
           },
           "targets": [
             {
-              "expr": "kafka_controller_kafkacontroller_value{instance=\"kafka-jmx-exporter:8080\",job=\"kafka\",name=\"ActiveControllerCount\"}",
+              "expr": "kafka_controller_activecontrollercount",
               "intervalFactor": 2,
+              "metric": "kafka_controller_activecontrollercount",
               "refId": "A",
-              "step": 600
+              "step": 4
             }
           ],
           "thresholds": "",
@@ -113,10 +114,11 @@
           },
           "targets": [
             {
-              "expr": "kafka_controller_kafkacontroller_value{instance=\"kafka-jmx-exporter:8080\",job=\"kafka\",name=\"GlobalPartitionCount\"}\t",
+              "expr": "kafka_controller_globalpartitioncount",
               "intervalFactor": 2,
+              "metric": "kafka_controller_globalpartitioncount",
               "refId": "A",
-              "step": 600
+              "step": 4
             }
           ],
           "thresholds": "",
@@ -131,13 +133,165 @@
             }
           ],
           "valueName": "avg"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "Prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "id": 3,
+          "isNew": true,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "kafka_server_brokertopicmetrics_messagesinpersec_topic_test_topic",
+              "intervalFactor": 2,
+              "metric": "kafka_server_brokertopicmetrics_messagesinpersec_topic_test_topic",
+              "refId": "A",
+              "step": 2
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Msg in per sec",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "show": true
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "Prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "id": 4,
+          "isNew": true,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "kafka_server_brokertopicmetrics_bytesoutpersec_topic_test_topic",
+              "intervalFactor": 2,
+              "metric": "kafka_server_brokertopicmetrics_bytesoutpersec_topic_test_topic",
+              "refId": "A",
+              "step": 2
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Bytes out per sec",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "show": true
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
         }
       ],
       "title": "Row"
     }
   ],
   "time": {
-    "from": "now-6h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -172,6 +326,6 @@
     "list": []
   },
   "schemaVersion": 12,
-  "version": 3,
+  "version": 0,
   "links": []
 }
