@@ -1,0 +1,94 @@
+= Prepare the Database
+
+. Download data from e.g. here: https://finances.worldbank.org/Loans-and-Credits/IDA-Statement-Of-Credits-and-Grants-Historical-Dat/tdwh-3krx
+
+. Create a network:
++
+[source,subs="verbatim,quotes,attributes"]
+--
+$ *docker network create data-net*
+--
+
+. Run Postgres:
++
+[source,subs="verbatim,quotes,attributes"]
+--
+$ *docker container run --rm -d \
+    --name postgres \
+    --net data-net \
+    -p 5432:5432 \
+    -v ${PWD}/pg-data:/var/lib/postgresql/data \
+    -v ${PWD}/source:/source \
+    postgres:11.2-alpine*
+--
+
+. Run the Postgres CLI:
++
+[source,subs="verbatim,quotes,attributes"]
+--
+$ *docker container run --rm -it \
+    --net data-net \
+    postgres:11.2-alpine psql -h postgres -U postgres*
+--
+
+. Create table:
++
+[source,subs="verbatim,quotes,attributes"]
+--
+postgres=# *CREATE TABLE credits_and_grants(
+    End_of_Period timestamp,
+    Credit_Number varchar(10),
+    Region varchar(50),
+    Country_Code varchar(2),
+    Country varchar(50),
+    Borrower varchar(50),
+    Credit_Status varchar(20),
+    Service_Charge_Rate numeric(15,2),
+    Currency_of_Commitment  varchar(3),
+    Project_ID  varchar(10),
+    Project_Name  varchar(50),
+    Original_Principal_Amount numeric(15,2),
+    Cancelled_Amount numeric(15,2),
+    Undisbursed_Amount numeric(15,2),
+    Disbursed_Amount numeric(15,2),
+    Repaid_to_IDA numeric(15,2),
+    Due_to_IDA numeric(15,2),
+    Exchange_Adjustment numeric(15,2),
+    Borrowers_Obligation numeric(15,2),
+    Sold_3rd_Party numeric(15,2),
+    Repaid_3rd_Party numeric(15,2),
+    Due_3rd_Party numeric(15,2),
+    Credits_Held numeric(15,2),
+    First_Repayment_Date timestamp,
+    Last_Repayment_Date timestamp,
+    Agreement_Signing_Date timestamp,
+    Board_Approval_Date timestamp,
+    Effective_Date timestamp,
+    Closed_Date timestamp,
+    Last_Disbursement_Date timestamp
+);*
+--
+
+. Import CSV:
++
+[source,subs="verbatim,quotes,attributes"]
+--
+postgres=# *COPY Credits_and_Grants FROM '/source/IDA_Credits_and_Grants.csv' DELIMITER ',' CSV HEADER;*
+COPY 501070
+--
+
+. Add primary key to table:
++
+[source,subs="verbatim,quotes,attributes"]
+--
+postgres=# *ALTER TABLE credits_and_grants ADD COLUMN id SERIAL PRIMARY KEY;*
+--
+
+. Quit `psql` by pressing `CTRL-d`.
+. Gracefully stop and remove the `postgres` container:
++
+[source,subs="verbatim,quotes,attributes"]
+--
+$ *docker container stop postgres*
+--
+
