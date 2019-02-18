@@ -5,8 +5,6 @@ services:
     hostname: zookeeper
     networks:
       - confluent
-    ports:
-      - 39999:39999
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -16,8 +14,6 @@ services:
     hostname: kafka
     networks:
       - confluent
-    ports:
-      - 49999:49999
     environment:
       KAFKA_BROKER_ID: 101
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -35,27 +31,10 @@ services:
     hostname: schema-registry
     networks:
       - confluent
-    ports:
-      - 59999:59999
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
       SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
-
-  rest-proxy:
-    image: confluentinc/cp-kafka-rest:5.1.0
-    hostname: rest-proxy
-    restart: always
-    ports:
-      - "8082:8082"
-      - 59996:59996
-    networks:
-      - confluent
-    environment:
-      KAFKA_REST_HOST_NAME: rest-proxy
-      KAFKA_REST_BOOTSTRAP_SERVERS: kafka:9092
-      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
-      KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
 
   ksql-server:
     image: "confluentinc/cp-ksql-server:5.1.0"
@@ -64,8 +43,6 @@ services:
       - "8088:8088"
     networks:
       - confluent
-    ports:
-      - 59998:59998
     environment:
       KSQL_CONFIG_DIR: "/etc/ksql"
       KSQL_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/ksql/log4j-rolling.properties"
@@ -95,7 +72,6 @@ services:
     restart: always
     ports:
       - "8083:8083"
-      - 59997:59997
     networks:
       - confluent
     environment:
