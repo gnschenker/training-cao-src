@@ -32,7 +32,6 @@
                     </subjectPatterns>
                     <subjects>
                         <users-value>avro/user.avsc</users-value>
-                        <users-value>avro/user.v3.avsc</users-value>
                     </subjects>
                 </configuration>
             </plugin>
