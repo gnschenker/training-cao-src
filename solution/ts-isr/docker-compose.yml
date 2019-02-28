@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   zk-1:
-    image: confluentinc/cp-zookeeper:5.1.0
+    image: confluentinc/cp-zookeeper:5.1.1
     networks:
       - confluent
     environment:
@@ -13,7 +13,7 @@ services:
       - ZOOKEEPER_SERVERS=zk-1:2888:3888;zk-2:2888:3888;zk-3:2888:3888
   
   zk-2:
-    image: confluentinc/cp-zookeeper:5.1.0
+    image: confluentinc/cp-zookeeper:5.1.1
     networks:
       - confluent
     environment:
@@ -25,7 +25,7 @@ services:
       - ZOOKEEPER_SERVERS=zk-1:2888:3888;zk-2:2888:3888;zk-3:2888:3888
   
   zk-3:
-    image: confluentinc/cp-zookeeper:5.1.0
+    image: confluentinc/cp-zookeeper:5.1.1
     networks:
       - confluent
     environment:
@@ -37,7 +37,7 @@ services:
       - ZOOKEEPER_SERVERS=zk-1:2888:3888;zk-2:2888:3888;zk-3:2888:3888
 
   kafka-1:
-    image: "confluentinc/cp-enterprise-kafka:5.1.0"
+    image: "confluentinc/cp-enterprise-kafka:5.1.1"
     hostname: kafka-1
     networks:
       - confluent
@@ -55,7 +55,7 @@ services:
       - NET_ADMIN
 
   kafka-2:
-    image: "confluentinc/cp-enterprise-kafka:5.1.0"
+    image: "confluentinc/cp-enterprise-kafka:5.1.1"
     hostname: kafka-2
     networks:
       - confluent
@@ -73,7 +73,7 @@ services:
       - NET_ADMIN
 
   kafka-3:
-    image: "confluentinc/cp-enterprise-kafka:5.1.0"
+    image: "confluentinc/cp-enterprise-kafka:5.1.1"
     hostname: kafka-3
     networks:
       - confluent
@@ -91,7 +91,7 @@ services:
       - NET_ADMIN
 
   schema-registry:
-    image: "confluentinc/cp-schema-registry:5.1.0"
+    image: "confluentinc/cp-schema-registry:5.1.1"
     networks:
       - confluent
     environment:
@@ -100,7 +100,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:5.1.0
+    image: confluentinc/cp-enterprise-control-center:5.1.1
     restart: always
     networks:
       - confluent
@@ -119,7 +119,7 @@ services:
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
 
   base:
-    image: confluentinc/cp-enterprise-kafka:5.1.0
+    image: confluentinc/cp-enterprise-kafka:5.1.1
     hostname: base
     networks:
       - confluent
@@ -128,7 +128,7 @@ services:
     command: /bin/sh
     tty: true
     environment:
-      CLASSPATH: /config/monitoring-interceptors-5.1.0.jar
+      CLASSPATH: /config/monitoring-interceptors-5.1.1.jar
 
 networks:
   confluent:
