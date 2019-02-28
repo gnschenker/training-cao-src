@@ -61,22 +61,39 @@ services:
       CONNECT_PLUGIN_PATH: /usr/share/java,/usr/share/confluent-hub-components
       CONNECT_REST_HOST_NAME: "connect"
 
-  # streams-app:
-  #   image: streams-app:latest
-  #   build: streams-sample
-  #   networks:
-  #     - confluent
-  #   environment:
-  #     BOOTSTRAP_SERVERS: kafka:9092
-  #     NUM_STANDBY_REPLICAS: 0 
+  streams-app-1:
+    image: streams-app:latest
+    build: streams-sample
+    restart: always
+    networks:
+      - confluent
+    ports:
+      - 9999:9999
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      NUM_STANDBY_REPLICAS: 0 
+      JMX_PORT: 9999
+      JMX_HOSTNAME: 127.0.0.1
+
+  streams-app-2:
+    image: streams-app:latest
+    build: streams-sample
+    restart: always
+    networks:
+      - confluent
+    ports:
+      - 9998:9998
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      NUM_STANDBY_REPLICAS: 0 
+      JMX_PORT: 9998
+      JMX_HOSTNAME: 127.0.0.1
 
   schema-registry:
     image: "confluentinc/cp-schema-registry:5.1.1"
     hostname: schema-registry
     networks:
       - confluent
-    ports:
-      - 9999:9999
     volumes:
       - ./schemas:/schemas
     environment:
