@@ -1,20 +1,26 @@
-FROM gradle:5.1.1-jdk11-slim AS builder
+FROM gradle:5.2.1-jdk11-slim AS builder
 WORKDIR /home/gradle/project
-ADD ./*.gradle ./
-COPY ./producer.properties ./
-COPY ./src ./src
+COPY build.gradle ./
+COPY settings.gradle ./
+COPY producer.properties ./
+COPY src ./src
 USER root
-RUN gradle build 
+RUN gradle build
 
-FROM openjdk:11-jre-slim
-COPY --from=builder /home/gradle/project/build/libs/app.jar /app/
+FROM openjdk:11.0.2-jre-slim
+ENV JMX_PORT=4444 \
+    JMX_HOSTNAME=127.0.0.1
+COPY --from=builder /home/gradle/project/build/distributions/project.tar /app/
+WORKDIR /app
+RUN tar -xvf project.tar
+WORKDIR /app/project
 COPY --from=builder /home/gradle/project/producer.properties /app/
-EXPOSE 4444
 CMD java \
         -Dcom.sun.management.jmxremote \
         -Dcom.sun.management.jmxremote.authenticate=false \
         -Dcom.sun.management.jmxremote.ssl=false \
-        -Djava.rmi.server.hostname=127.0.0.1 \
-        -Dcom.sun.management.jmxremote.rmi.port=4444 \
-        -Dcom.sun.management.jmxremote.port=4444 \
-        -jar /app/app.jar
+        -Djava.rmi.server.hostname=${JMX_HOSTNAME} \
+        -Dcom.sun.management.jmxremote.rmi.port=${JMX_PORT} \
+        -Dcom.sun.management.jmxremote.port=${JMX_PORT} \
+        -classpath "lib/*" clients.AuthorizationProducer
+ 
