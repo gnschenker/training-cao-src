@@ -4,12 +4,12 @@ services:
     image: cnfltraining/test-producer-net:1.0
     build: producer
     networks:
-    - app-net
+    - confluent
   consumer:
     image: cnfltraining/test-consumer-net:1.0
     build: consumer
     networks:
-    - app-net
+    - confluent
 
 networks:
-  app-net:
+  confluent:
