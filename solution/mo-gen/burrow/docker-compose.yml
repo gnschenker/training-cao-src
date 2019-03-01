@@ -4,7 +4,7 @@ services:
     image: confluentinc/cp-zookeeper:5.1.1
     hostname: zookeeper
     networks:
-      - app-net
+      - confluent
     ports:
       - 39999:39999
     environment:
@@ -17,7 +17,7 @@ services:
     image: "confluentinc/cp-enterprise-kafka:5.1.1"
     hostname: kafka
     networks:
-      - app-net
+      - confluent
     ports:
       - 49999:49999
     environment:
@@ -38,7 +38,7 @@ services:
     image: "confluentinc/cp-schema-registry:5.1.1"
     hostname: schema-registry
     networks:
-      - app-net
+      - confluent
     ports:
       - 59999:59999
     environment:
@@ -53,7 +53,7 @@ services:
     hostname: control-center
     restart: always
     networks:
-      - app-net
+      - confluent
     ports:
       - "9021:9021"
     environment:
@@ -76,9 +76,9 @@ services:
       - ${PWD}/docker-config:/etc/burrow/
       - ${PWD}/tmp:/var/tmp/burrow
     networks: 
-      - app-net
+      - confluent
     ports:
       - 8000:8000
 
 networks:
-  app-net:
+  confluent:

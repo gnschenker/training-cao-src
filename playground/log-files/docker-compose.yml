@@ -4,7 +4,7 @@ services:
     image: confluentinc/cp-zookeeper:5.1.1
     hostname: zookeeper
     networks:
-      - app-net
+      - confluent
     ports:
       - 9998:9998
     environment:
@@ -15,7 +15,7 @@ services:
     image: "confluentinc/cp-enterprise-kafka:5.1.1"
     hostname: kafka
     networks:
-      - app-net
+      - confluent
     ports:
       - 9999:9999
     environment:
@@ -28,4 +28,4 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
 
 networks:
-  app-net:
+  confluent:

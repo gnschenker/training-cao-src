@@ -1,10 +1,12 @@
 version: "3.5"
 services:
-  zk:
+  zookeeper:
     image: confluentinc/cp-zookeeper:5.1.1
-    container_name: zk
+    hostname: zookeeper
     networks:
       - confluent
+    ports:
+      - 2181:2181
     environment:
       - ZOOKEEPER_SERVER_ID=1
       - ZOOKEEPER_CLIENT_PORT=2181
@@ -14,18 +16,19 @@ services:
 
   kafka:
     image: "confluentinc/cp-enterprise-kafka:5.1.1"
-    container_name: kafka
+    hostname: kafka
     hostname: kafka
     networks:
       - confluent
     volumes:
       - ./agents:/agents
     ports:
+      - 9092:9092
       - 7071:7071
       - 9999:9999
     environment:
       KAFKA_BROKER_ID: 101
-      KAFKA_ZOOKEEPER_CONNECT: zk:2181
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_DELETE_TOPIC_ENABLE: "true"
@@ -36,7 +39,7 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.5.0
-    container_name: prometheus
+    hostname: prometheus
     networks:
       - confluent
     ports:
@@ -45,23 +48,15 @@ services:
       - ./prometheus:/etc/prometheus
 
   grafana:
-    image: grafana/grafana:3.0.1
+    image: grafana/grafana:6.0.0
     networks:
       - confluent
     ports:
       - 3000:3000/tcp
     volumes:
-      - "graf-db:/var/lib/grafana"
-
-  graf-db:
-    command:
-      - cat
-    tty: true
-    image: infinityworks/graf-db:08
-    networks:
-      - confluent
-    volumes:
-      - ${PWD}/graf-data:/var/lib/grafana/"
+      - grafana-storage:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
 
   control-center:
     image: confluentinc/cp-enterprise-control-center:5.1.1
@@ -88,7 +83,6 @@ services:
 
   base:
     image: confluentinc/cp-kafka-connect:5.1.1
-    container_name: base
     hostname: base
     entrypoint: /bin/sh
     tty: true
@@ -96,6 +90,7 @@ services:
       - confluent
 
 volumes:
-  graf-db:
+  grafana-storage:
+
 networks:
   confluent:

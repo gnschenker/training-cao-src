@@ -4,7 +4,7 @@ services:
     image: confluentinc/cp-zookeeper:5.1.1
     hostname: zookeeper
     networks:
-      - app-net
+      - confluent
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -13,7 +13,7 @@ services:
     image: "confluentinc/cp-enterprise-kafka:5.1.1"
     hostname: kafka
     networks:
-      - app-net
+      - confluent
     environment:
       KAFKA_BROKER_ID: 101
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -30,7 +30,7 @@ services:
     image: "confluentinc/cp-schema-registry:5.1.1"
     hostname: schema-registry
     networks:
-      - app-net
+      - confluent
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
@@ -41,7 +41,7 @@ services:
     hostname: control-center
     restart: always
     networks:
-      - app-net
+      - confluent
     ports:
       - "9021:9021"
     environment:
@@ -64,7 +64,7 @@ services:
     cap_add:
     - NET_ADMIN
     networks:
-      - app-net
+      - confluent
     volumes:
       - ./config:/config
     ports:
@@ -74,4 +74,4 @@ services:
       JMX_HOSTNAME: 127.0.0.1
 
 networks:
-  app-net:
+  confluent:
