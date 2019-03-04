@@ -2,7 +2,7 @@ version: "3.5"
 services:
   zk:
     image: confluentinc/cp-zookeeper:5.1.1
-    container_name: zk
+    hostname: zk
     networks:
       - confluent
     environment:
@@ -14,7 +14,7 @@ services:
 
   kafka:
     image: "confluentinc/cp-enterprise-kafka:5.1.1"
-    container_name: kafka
+    hostname: kafka
     hostname: kafka
     networks:
       - confluent
@@ -47,7 +47,7 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.5.0
-    container_name: prometheus
+    hostname: prometheus
     networks:
       - confluent
     ports:
@@ -77,7 +77,7 @@ services:
 
   base:
     image: confluentinc/cp-kafka-connect:5.1.1
-    container_name: base
+    hostname: base
     hostname: base
     entrypoint: /bin/sh
     tty: true

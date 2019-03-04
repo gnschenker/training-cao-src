@@ -2,7 +2,7 @@ version: "3.5"
 services:
   zk-1:
     image: confluentinc/cp-zookeeper:5.1.1
-    container_name: zk-1
+    hostname: zk-1
     # restart: always
     volumes:
       - data-zk-1:/var/lib/zookeeper
@@ -18,7 +18,7 @@ services:
   
   zk-2:
     image: confluentinc/cp-zookeeper:5.1.1
-    container_name: zk-2
+    hostname: zk-2
     # restart: always
     volumes:
       - data-zk-2:/var/lib/zookeeper
@@ -34,7 +34,7 @@ services:
   
   zk-3:
     image: confluentinc/cp-zookeeper:5.1.1
-    container_name: zk-3
+    hostname: zk-3
     # restart: always
     volumes:
       - data-zk-3:/var/lib/zookeeper
@@ -50,7 +50,7 @@ services:
 
   kafka-1:
     image: "confluentinc/cp-enterprise-kafka:5.1.1"
-    container_name: kafka-1
+    hostname: kafka-1
     hostname: kafka-1
     networks:
       - confluent
@@ -68,7 +68,7 @@ services:
 
   kafka-2:
     image: "confluentinc/cp-enterprise-kafka:5.1.1"
-    container_name: kafka-2
+    hostname: kafka-2
     hostname: kafka-2
     networks:
       - confluent
@@ -86,7 +86,7 @@ services:
 
   kafka-3:
     image: "confluentinc/cp-enterprise-kafka:5.1.1"
-    container_name: kafka-3
+    hostname: kafka-3
     hostname: kafka-3
     networks:
       - confluent
@@ -104,7 +104,7 @@ services:
 
   schema-registry:
     image: "confluentinc/cp-schema-registry:5.1.1"
-    container_name: schema-registry
+    hostname: schema-registry
     networks:
       - confluent
     environment:
@@ -114,7 +114,7 @@ services:
 
   connect:
     image: confluentinc/cp-kafka-connect:5.1.1
-    container_name: connect
+    hostname: connect
     hostname: connect
     ports:
       - "8083:8083"
@@ -149,7 +149,7 @@ services:
 
   rest-proxy:
     image: confluentinc/cp-kafka-rest:5.1.1
-    container_name: rest-proxy
+    hostname: rest-proxy
     networks:
       - confluent
     environment:
@@ -160,7 +160,7 @@ services:
 
   ksql-server:
     image: "confluentinc/cp-ksql-server:5.1.1"
-    container_name: ksql-server
+    hostname: ksql-server
     ports:
       - "8088:8088"
     networks:
@@ -180,7 +180,7 @@ services:
 
   ksql-cli:
     image: confluentinc/cp-ksql-cli:5.1.1
-    container_name: ksql-cli
+    hostname: ksql-cli
     networks:
       - confluent
     entrypoint: /bin/sh
@@ -188,7 +188,7 @@ services:
 
   control-center:
     image: confluentinc/cp-enterprise-control-center:5.1.1
-    container_name: control-center
+    hostname: control-center
     restart: always
     networks:
       - confluent
@@ -211,7 +211,7 @@ services:
 
   base:
     image: confluentinc/cp-kafka-connect:5.1.1
-    container_name: base
+    hostname: base
     hostname: base
     networks:
       - confluent
