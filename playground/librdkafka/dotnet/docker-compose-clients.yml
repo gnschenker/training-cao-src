@@ -4,12 +4,12 @@ services:
     image: test-producer-net
     build: producer
     networks:
-    - app-net
+    - confluent
   consumer:
     image: test-consumer-net
     build: consumer
     networks:
-    - app-net
+    - confluent
 
 networks:
-  app-net:
+  confluent:

@@ -24,10 +24,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
       KAFKA_DELETE_TOPIC_ENABLE: "true"
-      CONFLUENT_METRICS_REPORTER_TOPIC_CREATE: "false"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_METRIC_REPORTERS: "io.confluent.metrics.reporter.ConfluentMetricsReporter"
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: "kafka:9092"
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
       KAFKA_JMX_PORT: 9999
       KAFKA_JMX_HOSTNAME: 127.0.0.1
@@ -45,6 +42,7 @@ services:
 
   grafana:
     image: grafana/grafana:6.0.0
+    hostname: grafana
     networks:
       - confluent
     ports:
@@ -53,18 +51,6 @@ services:
       - grafana-storage:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./grafana/dashboards:/var/lib/grafana/dashboards
-  
-  base:
-    image: "confluentinc/cp-enterprise-kafka:5.1.1"
-    hostname: base
-    volumes:
-      - ./config:/config
-    entrypoint: /bin/sh
-    tty: true
-    networks:
-      - confluent
-    environment:
-      CLASSPATH: /config/monitoring-interceptors-5.1.1.jar
 
 networks:
   confluent:

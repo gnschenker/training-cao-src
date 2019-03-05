@@ -1,11 +1,19 @@
-FROM gradle:5.1.1-jdk11-slim AS builder
+FROM gradle:5.2.1-jdk11-slim AS builder
 WORKDIR /home/gradle/project
-COPY . /home/gradle/project
+COPY build.gradle ./
+COPY settings.gradle ./
+COPY producer.properties ./
+COPY stations.csv ./
+COPY src ./src
 USER root
-RUN gradle build 
+RUN gradle build
 
-FROM openjdk:11-jre-slim
-COPY --from=builder /home/gradle/project/build/libs/app.jar /app/
+FROM openjdk:11.0.2-jre-slim
 COPY --from=builder /home/gradle/project/producer.properties /app/
 COPY --from=builder /home/gradle/project/stations.csv /app/
-CMD java -jar /app/app.jar 
+COPY --from=builder /home/gradle/project/build/distributions/project.tar /app/
+WORKDIR /app
+RUN tar -xvf project.tar
+WORKDIR /app/project
+CMD java -classpath "lib/*" clients.TemperaturesProducer
+        

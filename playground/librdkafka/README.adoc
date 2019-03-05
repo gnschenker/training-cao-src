@@ -53,7 +53,7 @@ docker image build -t test-consumer-net .
 --
 docker container run --rm -it \
     --hostname dotnet \
-    --net librdkafka_app-net \
+    --net librdkafka_confluent \
     -v ${HOME}/.nuget-docker:/root/.nuget \
     -v $(pwd):/app \
     -w /app \
@@ -65,7 +65,7 @@ docker container run --rm -it \
 [source]
 --
 docker container run --rm -it \
-    --net librdkafka_app-net \
+    --net librdkafka_confluent \
     test-producer-net
 --
 
@@ -85,7 +85,7 @@ docker image build -t test-consumer-net .
 --
 docker container run --rm -it \
     --hostname dotnet \
-    --net librdkafka_app-net \
+    --net librdkafka_confluent \
     -v ${HOME}/.nuget-docker:/root/.nuget \
     -v $(pwd):/app \
     -w /app \
@@ -97,7 +97,7 @@ docker container run --rm -it \
 [source]
 --
 docker container run --rm -it \
-    --net librdkafka_app-net \
+    --net librdkafka_confluent \
     test-consumer-net
 --
 

@@ -4,16 +4,16 @@ services:
     image: cnfltraining/jmx-producer:1.0
     build: producer
     networks:
-      - app-net
+      - confluent
     ports:
       - 4444:4444
   consumer:
     image: cnfltraining/jmx-consumer:1.0
     build: consumer
     networks:
-      - app-net
+      - confluent
     ports:
       - 4445:4445
 
 networks:
-  app-net:
+  confluent:
